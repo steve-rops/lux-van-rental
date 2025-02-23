@@ -14,7 +14,6 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 export default function Search() {
-  const [passengers, setPassengers] = useState(1);
   const [checkInDate, setCheckInDate] = useState<Date | undefined>(new Date());
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(
     new Date()
