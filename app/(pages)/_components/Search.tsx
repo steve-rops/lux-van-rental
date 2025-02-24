@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CalendarIcon, MapPin } from "lucide-react";
@@ -12,6 +11,13 @@ import {
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Search() {
   const [checkInDate, setCheckInDate] = useState<Date | undefined>(new Date());
@@ -25,8 +31,16 @@ export default function Search() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="relative w-fit">
           <label className="block text-sm font-medium mb-1">From</label>
-          <MapPin className="mr-2 h-4 w-4 absolute translate-y-[50%]" />
-          <Input placeholder="   Pickup Location" />
+          <Select required>
+            <SelectTrigger className="w-fit">
+              <MapPin className="mr-2 text-foreground h-4 w-4 " />
+              <SelectValue placeholder="Location" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="airport">Airport</SelectItem>
+              <SelectItem value="cityCenter">City</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
