@@ -1,6 +1,8 @@
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Search from "./_components/Search";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const montserrat = Montserrat({
   weight: ["200", "400", "700"],
@@ -12,6 +14,7 @@ export default function HomePage() {
     <div className="space-y-10">
       <div className=" grid grid-cols-2 items-center">
         <div className="LEFT PART">
+          <Badge className="text-[10px]">#1 Luxury Van Provider</Badge>
           <h1
             className={`text-6xl my-2 font-bold antialiased ${montserrat.className}`}
           >
@@ -21,6 +24,10 @@ export default function HomePage() {
             Fast and easy. Get on with us and our well trained stuff will take
             care of you.
           </p>
+          <div className="flex gap-2 mt-4">
+            <Button variant="outline">Vans</Button>
+            <Button>Hope On</Button>
+          </div>
         </div>
 
         <div className="RIGHT PART justify-self-center ">

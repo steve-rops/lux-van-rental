@@ -45,12 +45,11 @@ export default function Search() {
       checkOut: new Date(new Date().getTime() + oneWeekAhead),
     },
   });
+
+  const checkInDate = watch("checkIn");
+  const checkOutDate = watch("checkOut");
+
   const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
-
-  const checkInDate = watch("checkIn"); // Watch for check-in date changes
-  const checkOutDate = watch("checkOut"); // Watch for check-out date changes
-
-  console.log(errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -116,7 +115,7 @@ export default function Search() {
           {/* check-in */}
           <div className="w-full">
             <label className="block text-sm font-medium mb-1">
-              Check-in Date
+              Pick-up Date
             </label>
             <Controller
               name="checkIn"
@@ -135,7 +134,7 @@ export default function Search() {
                       {field.value ? (
                         format(field.value, "PPP")
                       ) : (
-                        <span>Pick a check-in date</span>
+                        <span>Pick a pick-up date</span>
                       )}
                     </Button>
                   </PopoverTrigger>
@@ -171,7 +170,7 @@ export default function Search() {
           {/* checkout */}
           <div className="w-full">
             <label className="block text-sm font-medium mb-1">
-              Check-out Date
+              Drop-off Date
             </label>
             <Controller
               name="checkOut"
