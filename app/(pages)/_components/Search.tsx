@@ -52,7 +52,7 @@ export default function Search() {
   const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="" onSubmit={handleSubmit(onSubmit)}>
       <div className="p-4 border-[0.5px] border-muted bg-white shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold mb-4">Trip Details</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[12%,12%,25%,25%,1fr] gap-4">
