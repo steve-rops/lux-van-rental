@@ -1,10 +1,10 @@
-import { Caveat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Search from "./_components/Search";
 
-const caveat = Caveat({
+const montserrat = Montserrat({
+  weight: ["200", "400", "700"],
   subsets: ["latin"],
-  weight: ["400", "700"],
 });
 
 export default function HomePage() {
@@ -13,7 +13,7 @@ export default function HomePage() {
       <div className=" grid grid-cols-2 items-center">
         <div className="LEFT PART">
           <h1
-            className={`text-6xl my-2 font-bold antialiased ${caveat.className}`}
+            className={`text-6xl my-2 font-bold antialiased ${montserrat.className}`}
           >
             Let us drive you there!
           </h1>
