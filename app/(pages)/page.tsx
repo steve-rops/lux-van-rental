@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRightCircle } from "lucide-react";
 import Features from "./_components/Features";
+import Link from "next/link";
 
 const montserrat = Montserrat({
   weight: ["200", "400", "700"],
@@ -29,10 +30,12 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex gap-2 mt-4">
-            <Button className="flex gap-2 items-center">
-              <span>Check Our Fleet</span>
-              <ArrowRightCircle />
-            </Button>
+            <Link href="/new">
+              <Button className="flex gap-2 items-center">
+                <span>Check Our Fleet</span>
+                <ArrowRightCircle />
+              </Button>
+            </Link>
             <Button variant="outline">Vans</Button>
           </div>
         </div>

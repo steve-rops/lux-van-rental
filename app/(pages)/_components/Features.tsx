@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import LandingPapeHeading from "@/components/ui/landingPageHeading";
 
 const features = [
   {
@@ -7,8 +8,8 @@ const features = [
     badge: "safety",
     description:
       "With countless hours of driving experience, these skilled drivers are always ready and willing to lend a helping hand.",
-    icon: "🚗", // Example icon for visual representation
-    highlight: true, // Highlight this feature if desired
+    icon: "🚗",
+    highlight: true,
   },
   {
     title: "Luxurious Interiors",
@@ -38,9 +39,9 @@ const features = [
 
 export default function Features() {
   return (
-    <div className="p-10 bg-muted rounded-md space-y-10">
+    <div className="p-10 bg-muted rounded-md space-y-10 shadow-md">
       <div>
-        <h3 className="text-center font-semibold text-3xl">Features</h3>
+        <LandingPapeHeading>Features</LandingPapeHeading>
         <p className="text-center text-muted-foreground">
           “Experience the Perfect Blend of Comfort, Safety, and Innovation”
         </p>
