@@ -18,11 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-enum Location {
-  airport = "airport",
-  cityCenter = "citycenter",
-}
+import { useRouter } from "next/navigation";
+import { Location } from "@/types/searchParams";
 
 interface FormInputs {
   location: Location;
@@ -31,8 +28,19 @@ interface FormInputs {
   checkOut: Date;
 }
 
-export default function Search() {
+export default function Search({
+  paramsPersons,
+  loc,
+  paramsCheckin,
+  paramsCheckout,
+}: {
+  paramsPersons?: string | null;
+  loc?: Location | null;
+  paramsCheckin?: Date;
+  paramsCheckout?: Date;
+}) {
   const oneWeekAhead = 1000 * 60 * 60 * 24 * 7;
+
   const {
     control,
     setValue,
@@ -41,15 +49,24 @@ export default function Search() {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
-      checkIn: new Date(),
-      checkOut: new Date(new Date().getTime() + oneWeekAhead),
+      checkIn: paramsCheckin || new Date(),
+      checkOut: paramsCheckout || new Date(new Date().getTime() + oneWeekAhead),
+      persons: paramsPersons || "1",
+      location: loc || undefined,
     },
   });
+  const router = useRouter();
 
   const checkInDate = watch("checkIn");
   const checkOutDate = watch("checkOut");
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    // console.log(data);
+
+    router.push(
+      `/new?loc=${data.location}&persons=${data.persons}&checkin=${data.checkIn}&checkout=${data.checkOut}`
+    );
+  };
 
   return (
     <form className="" onSubmit={handleSubmit(onSubmit)}>
@@ -144,7 +161,6 @@ export default function Search() {
                       selected={field.value}
                       onSelect={(date) => {
                         field.onChange(date);
-                        console.log(date);
                         if (date)
                           setValue(
                             "checkOut",
