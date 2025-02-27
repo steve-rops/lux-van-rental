@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { CalendarIcon, MapPin, User2Icon } from "lucide-react";
+import { CalendarIcon, MapPin, User2Icon, XIcon } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -20,51 +20,50 @@ import {
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { Location } from "@/types/searchParams";
+import { DEFAULT_CHECK_IN_CHECK_OUT_DIFF } from "@/constants";
+import { Badge } from "@/components/ui/badge";
 
 interface FormInputs {
-  location: Location;
-  persons: string;
-  checkIn: Date;
-  checkOut: Date;
+  location?: Location | undefined;
+  persons?: string;
+  checkIn?: Date;
+  checkOut?: Date;
 }
 
 export default function Search({
-  paramsPersons,
-  loc,
-  paramsCheckin,
-  paramsCheckout,
-}: {
-  paramsPersons?: string | null;
-  loc?: Location | null;
-  paramsCheckin?: Date;
-  paramsCheckout?: Date;
-}) {
-  const oneWeekAhead = 1000 * 60 * 60 * 24 * 7;
-
-  const {
-    control,
-    setValue,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>({
+  persons,
+  location,
+  checkIn,
+  checkOut,
+}: FormInputs) {
+  const { control, setValue, watch, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
-      checkIn: paramsCheckin || new Date(),
-      checkOut: paramsCheckout || new Date(new Date().getTime() + oneWeekAhead),
-      persons: paramsPersons || "1",
-      location: loc || undefined,
+      checkIn: checkIn || new Date(),
+      checkOut:
+        checkOut ||
+        new Date(new Date().getTime() + DEFAULT_CHECK_IN_CHECK_OUT_DIFF),
+      persons: persons || "1",
+      location: location || undefined,
     },
   });
+
   const router = useRouter();
 
   const checkInDate = watch("checkIn");
   const checkOutDate = watch("checkOut");
+  const loc = watch("location");
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     // console.log(data);
+    const checkinISO = data.checkIn
+      ? new Date(data.checkIn).toISOString()
+      : undefined;
+    const checkoutISO = data.checkOut
+      ? new Date(data.checkOut).toISOString()
+      : undefined;
 
     router.push(
-      `/new?loc=${data.location}&persons=${data.persons}&checkin=${data.checkIn}&checkout=${data.checkOut}`
+      `/new?loc=${data.location}&persons=${data.persons}&checkin=${checkinISO}&checkout=${checkoutISO}`
     );
   };
 
@@ -79,19 +78,17 @@ export default function Search({
             <Controller
               name="location"
               control={control}
-              rules={{ required: "Location is required" }}
               render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger className="w-fit">
                     <MapPin className="mr-2 text-foreground h-4 w-4" />
-                    <SelectValue placeholder="Location" />
+                    <SelectValue placeholder="location">
+                      {loc === undefined ? "location" : field.value}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="airport">Airport</SelectItem>
-                    <SelectItem value="cityCenter">City</SelectItem>
+                    <SelectItem value="city">City</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -164,13 +161,18 @@ export default function Search({
                         if (date)
                           setValue(
                             "checkOut",
-                            new Date(date.getTime() + oneWeekAhead)
+                            new Date(
+                              date.getTime() + DEFAULT_CHECK_IN_CHECK_OUT_DIFF
+                            )
                           );
                         if (!date) {
                           setValue("checkIn", new Date());
                           setValue(
                             "checkOut",
-                            new Date(new Date().getTime() + oneWeekAhead)
+                            new Date(
+                              new Date().getTime() +
+                                DEFAULT_CHECK_IN_CHECK_OUT_DIFF
+                            )
                           );
                         }
                       }}
@@ -237,8 +239,18 @@ export default function Search({
             </Button>
           </div>
         </div>
-        {errors.location && (
-          <p className="text-xs text-red-500">{errors.location.message}</p>
+
+        {loc && (
+          <div className="mt-2">
+            <Badge className="flex items-end gap-2 w-fit">
+              <XIcon
+                onClick={() => setValue("location", undefined)}
+                className="hover:cursor-pointer"
+                size={14}
+              />
+              <span>{loc}</span>
+            </Badge>
+          </div>
         )}
       </div>
     </form>

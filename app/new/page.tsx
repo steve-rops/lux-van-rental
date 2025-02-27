@@ -1,38 +1,40 @@
 import { Location } from "@/types/searchParams";
 import Search from "../(pages)/_components/Search";
+import { DEFAULT_CHECK_IN_CHECK_OUT_DIFF } from "@/constants";
+import { redirect } from "next/navigation";
 
-export default function NewBooking({
-  searchParams,
-}: {
-  searchParams: Record<string, string> | URLSearchParams;
-}) {
-  let params: Record<string, string | null> = {};
+type Props = {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+};
 
-  // Convert URLSearchParams to an object
-  if (searchParams instanceof URLSearchParams) {
-    params = Object.fromEntries(searchParams.entries());
-  } else {
-    params = searchParams;
-  }
+export default async function NewBooking({ searchParams }: Props) {
+  const { loc, persons, checkin, checkout } = await searchParams;
 
-  // Extract and cast values
-  const loc: Location | null | undefined = params.loc as
-    | Location
-    | null
-    | undefined;
-  const persons = params.persons;
-  const checkin = params.checkin ? new Date(params.checkin) : undefined;
-  const checkout = params.checkout ? new Date(params.checkout) : undefined;
+  if (!persons)
+    redirect(
+      `/new?location=undefined&persons=1&checkin=${new Date().toISOString()}&checkout=${new Date(
+        new Date().getTime() + DEFAULT_CHECK_IN_CHECK_OUT_DIFF
+      ).toISOString()}`
+    );
 
-  console.log(persons, loc, checkin, checkout);
+  const location: Location | undefined = Object.values(Location).includes(
+    loc as Location
+  )
+    ? (loc as Location)
+    : undefined;
+
+  const checkinDate: Date = checkin ? new Date(checkin) : new Date();
+  const checkoutDate: Date = checkout
+    ? new Date(checkout)
+    : new Date(new Date().getTime() + DEFAULT_CHECK_IN_CHECK_OUT_DIFF);
 
   return (
     <div>
       <Search
-        paramsPersons={persons}
-        loc={loc}
-        paramsCheckin={checkin}
-        paramsCheckout={checkout}
+        location={location}
+        persons={persons}
+        checkIn={checkinDate}
+        checkOut={checkoutDate}
       />
     </div>
   );
