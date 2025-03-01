@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { CalendarIcon, MapPin, User2Icon, XIcon } from "lucide-react";
+import { CalendarIcon, MapPin, User2Icon } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -21,7 +21,6 @@ import {
 import { useRouter } from "next/navigation";
 import { Location } from "@/types/searchParams";
 import { DEFAULT_CHECK_IN_CHECK_OUT_DIFF } from "@/constants";
-import { Badge } from "@/components/ui/badge";
 
 interface FormInputs {
   location?: Location | undefined;
@@ -36,7 +35,13 @@ export default function Search({
   checkIn,
   checkOut,
 }: FormInputs) {
-  const { control, setValue, watch, handleSubmit } = useForm<FormInputs>({
+  const {
+    control,
+    setValue,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
     defaultValues: {
       checkIn: checkIn || new Date(),
       checkOut:
@@ -51,7 +56,6 @@ export default function Search({
 
   const checkInDate = watch("checkIn");
   const checkOutDate = watch("checkOut");
-  const loc = watch("location");
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     // console.log(data);
@@ -77,14 +81,20 @@ export default function Search({
             <label className="block text-sm font-medium mb-1">From</label>
             <Controller
               name="location"
+              rules={{ required: "Location is required" }}
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="w-fit">
+                  <SelectTrigger
+                    className={`w-fit ${
+                      errors.location ? "border-destructive" : ""
+                    }`}
+                  >
                     <MapPin className="mr-2 text-foreground h-4 w-4" />
-                    <SelectValue placeholder="location">
-                      {loc === undefined ? "location" : field.value}
-                    </SelectValue>
+                    <SelectValue
+                      placeholder="location"
+                      defaultValue={location}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="airport">Airport</SelectItem>
@@ -239,18 +249,10 @@ export default function Search({
             </Button>
           </div>
         </div>
-
-        {loc && (
-          <div className="mt-2">
-            <Badge className="flex items-end gap-2 w-fit">
-              <XIcon
-                onClick={() => setValue("location", undefined)}
-                className="hover:cursor-pointer"
-                size={14}
-              />
-              <span>{loc}</span>
-            </Badge>
-          </div>
+        {errors.location && (
+          <p className="text-destructive text-[10px]">
+            {errors.location.message}
+          </p>
         )}
       </div>
     </form>

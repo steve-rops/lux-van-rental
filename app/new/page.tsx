@@ -12,7 +12,7 @@ export default async function NewBooking({ searchParams }: Props) {
 
   if (!persons)
     redirect(
-      `/new?location=undefined&persons=1&checkin=${new Date().toISOString()}&checkout=${new Date(
+      `/new?loc=airport&persons=1&checkin=${new Date().toISOString()}&checkout=${new Date(
         new Date().getTime() + DEFAULT_CHECK_IN_CHECK_OUT_DIFF
       ).toISOString()}`
     );

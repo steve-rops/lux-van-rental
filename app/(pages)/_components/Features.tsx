@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import LandingPapeHeading from "@/components/ui/landingPageHeading";
+import Link from "next/link";
 
 const features = [
   {
@@ -63,7 +64,9 @@ export default function Features() {
       </div>
 
       <div className="grid place-items-center">
-        <Button size="sm">See More</Button>
+        <Link href="/features">
+          <Button size="sm">See More</Button>
+        </Link>
       </div>
     </div>
   );

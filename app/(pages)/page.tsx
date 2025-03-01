@@ -30,7 +30,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex gap-2 mt-4">
-            <Link href="/new">
+            <Link href="/cars">
               <Button className="flex gap-2 items-center">
                 <span>Check Our Fleet</span>
                 <ArrowRightCircle />
