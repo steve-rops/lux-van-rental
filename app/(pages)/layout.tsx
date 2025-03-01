@@ -12,13 +12,13 @@ export default function PagesLayout({
         <Link href="/">
           <h2 className="text-4xl font-bold hover:cursor-pointer">VANRA</h2>
         </Link>
-        <ul className="flex lg:text-lg gap-2 items-center">
+        <ul className="flex lg:text-lg gap-4 items-center">
           <li className="hover:cursor-pointer">Cars</li>
           <li className="hover:cursor-pointer">Features</li>
           <li className="hover:cursor-pointer">Help</li>
           <Link href="/new">
             <li>
-              <Button>Find the best!</Button>
+              <Button size="sm">log in</Button>
             </li>
           </Link>
         </ul>
