@@ -2,6 +2,7 @@ import { Location } from "@/types/searchParams";
 import Search from "../(pages)/_components/Search";
 import { DEFAULT_CHECK_IN_CHECK_OUT_DIFF } from "@/constants";
 import { redirect } from "next/navigation";
+import Filters from "./_components/Filters";
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -10,12 +11,7 @@ type Props = {
 export default async function NewBooking({ searchParams }: Props) {
   const { loc, persons, checkin, checkout } = await searchParams;
 
-  if (!persons)
-    redirect(
-      `/new?loc=airport&persons=1&checkin=${new Date().toISOString()}&checkout=${new Date(
-        new Date().getTime() + DEFAULT_CHECK_IN_CHECK_OUT_DIFF
-      ).toISOString()}`
-    );
+  if (!persons) redirect("/");
 
   const location: Location | undefined = Object.values(Location).includes(
     loc as Location
@@ -28,14 +24,20 @@ export default async function NewBooking({ searchParams }: Props) {
     ? new Date(checkout)
     : new Date(new Date().getTime() + DEFAULT_CHECK_IN_CHECK_OUT_DIFF);
 
+  // const url: string = `/new?loc=${loc}&persons=${persons}&checkin=${new Date(
+  //   checkinDate
+  // ).toISOString()}&checkout=${new Date(checkoutDate).toISOString()}`;
+
   return (
-    <div>
+    <div className="space-y-4">
       <Search
         location={location}
         persons={persons}
         checkIn={checkinDate}
         checkOut={checkoutDate}
       />
+
+      <Filters />
     </div>
   );
 }
