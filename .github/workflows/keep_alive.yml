@@ -1,10 +1,10 @@
 name: Keep Supabase Active
 on:
   schedule:
-    - cron: '0 0 */3 * *' # Runs every 3 days at midnight UTC
+    - cron: "0 */12 * * *" # Runs every 12 hours at midnight and noon UTC
 jobs:
   keepAlive:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Vercel Keep-Alive
-        run: curl -X GET "https://your-vercel-project.vercel.app/api/keep-alive"
+        run: curl -X GET "https://lux-van-rental.vercel.app/api/keep-alive"

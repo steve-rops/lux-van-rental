@@ -58,6 +58,11 @@ model Booking {
   updatedAt DateTime @updatedAt
 }
 
+model LifeChecks {
+  id          Int    @id @default(autoincrement())
+  lastUpdate  DateTime
+}
+
 model Review {
   id        Int      @id @default(autoincrement())
   rating    Int      // Rating from 1 to 5
