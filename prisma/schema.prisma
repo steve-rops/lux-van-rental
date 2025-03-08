@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String   // Hashed password
+  name      String?
+  role      Role     @default(RENTER) // RENTER or OWNER
+  vans      Van[]    // Vans owned by the user (if role is OWNER)
+  bookings  Booking[] // Bookings made by the user
+  reviews   Review[] // Reviews written by the user
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Van {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  pricePerDay Float
+  capacity    Int      // Number of people the van can accommodate
+  location    String   // Location of the van (e.g., city, address)
+  isAvailable Boolean  @default(true) // Availability status
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     Int      // ID of the user who owns the van
+  bookings    Booking[] // Bookings for this van
+  reviews     Review[] // Reviews for this van
+  images      Image[]  // Images of the van
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  startDate DateTime
+  endDate   DateTime
+  totalCost Float
+  status    BookingStatus @default(PENDING) // PENDING, CONFIRMED, CANCELLED
+  van       Van      @relation(fields: [vanId], references: [id])
+  vanId     Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int      // Rating from 1 to 5
+  comment   String?
+  van       Van      @relation(fields: [vanId], references: [id])
+  vanId     Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String   // URL of the image
+  van       Van      @relation(fields: [vanId], references: [id])
+  vanId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  RENTER
+  OWNER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
