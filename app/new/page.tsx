@@ -3,6 +3,7 @@ import Search from "../(pages)/_components/Search";
 import { DEFAULT_CHECK_IN_CHECK_OUT_DIFF } from "@/constants";
 import { redirect } from "next/navigation";
 import Filters from "./_components/Filters";
+import CarList from "./_components/CarList";
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -38,6 +39,8 @@ export default async function NewBooking({ searchParams }: Props) {
       />
 
       <Filters />
+
+      <CarList />
     </div>
   );
 }
