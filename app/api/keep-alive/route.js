@@ -2,10 +2,10 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  await prisma.lifeChecks.create({
+  const res = await prisma.lifeChecks.create({
     data: {
-      lastUpdate: new Date(),
+      lastUpdate: new Date().toLocaleString(),
     },
   });
-  return NextResponse.json({ updated: new Date().toLocaleString() });
+  return NextResponse.json(res.lastUpdate);
 }
