@@ -33,6 +33,7 @@ model Van {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   bookings    Booking[]
+  images      Image[]
   reviews     Review[]
   owner       User      @relation(fields: [ownerId], references: [id])
 }
