@@ -4,6 +4,8 @@ import { DEFAULT_CHECK_IN_CHECK_OUT_DIFF } from "@/constants";
 import { redirect } from "next/navigation";
 import Filters from "./_components/Filters";
 import CarList from "./_components/CarList";
+import { Suspense } from "react";
+import Loading from "@/components/ui/loading";
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -40,7 +42,9 @@ export default async function NewBooking({ searchParams }: Props) {
 
       <Filters />
 
-      <CarList />
+      <Suspense fallback={<Loading />}>
+        <CarList />
+      </Suspense>
     </div>
   );
 }

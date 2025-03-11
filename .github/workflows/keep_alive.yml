@@ -1,7 +1,7 @@
 name: Keep Supabase Active
 on:
   schedule:
-    - cron: "0 */12 * * *" # Runs every 12 hours at midnight and noon UTC
+    - cron: "0 0 * * *" # Runs once every day at midnight UTC
 jobs:
   keepAlive:
     runs-on: ubuntu-latest
